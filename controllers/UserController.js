@@ -1,5 +1,9 @@
 var User = require("../models/User");
 var PasswordToken = require("../models/PasswordToken");
+var jwt = require("jsonwebtoken");
+var bcrypt = require("bcrypt");
+
+var secret = "minhastringquedefineotoken"
 
 class UserController {
 
@@ -112,6 +116,36 @@ class UserController {
             return;
         }
 
+    }
+
+    async login(req, res) {
+        var { email, password } = req.body;
+        var user = await User.findUserByEmailWithPassword(email);
+
+        if (user == undefined) {
+            res.status(404);
+            res.json({
+                status: false,
+                err: "This user does not exist!"
+            })
+        } else {
+            var result = await bcrypt.compare(password, user.password);
+
+            if (result) {
+                var token = jwt.sign({
+                    email: user.email,
+                    role: user.role
+                },
+                    secret);
+                res.status(200);
+                res.json({
+                    token: token
+                })
+            } else {
+                res.status(406);
+                res.send("invalid password")
+            }
+        }
     }
 }
 
