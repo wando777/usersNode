@@ -116,7 +116,7 @@ class User {
 
             //Role edition
             if (role != undefined) {
-                if (name != user.role) {
+                if (role != user.role) {
                     editedUser.role = role;
                 }
             } else {

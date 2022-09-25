@@ -2,7 +2,7 @@ var express = require("express")
 var app = express();
 var router = express.Router();
 var HomeController = require("../controllers/HomeController");
-var UserController = require("../controllers/UserController")
+var UserController = require("../controllers/UserController");
 var adminAuth = require("../middleware/AdminAuth");
 
 router.get('/', HomeController.index);
@@ -16,5 +16,7 @@ router.post("/recoverypassword", UserController.recoveryPassword);
 router.post("/changepassword", UserController.changePassword);
 
 router.post("/login", UserController.login);
+
+router.post("/validate", adminAuth, HomeController.validateToken);
 
 module.exports = router;

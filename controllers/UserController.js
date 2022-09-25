@@ -28,7 +28,16 @@ class UserController {
         //console.log(req.body);
         var { email, name, password } = req.body;
 
+        //Undefined
         if (email == undefined || name == undefined || password == undefined) {
+            res.status(400);
+            res.json({
+                err: "invalid parameter!"
+            })
+            return;
+        }
+        //Empty
+        if (email == '' || name == '' || password == '') {
             res.status(400);
             res.json({
                 err: "invalid parameter!"
@@ -143,7 +152,10 @@ class UserController {
                 })
             } else {
                 res.status(406);
-                res.send("invalid password")
+                res.json({
+                    err: "invalid password"
+                })
+                //res.send("invalid password")
             }
         }
     }
